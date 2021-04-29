@@ -1,136 +1,139 @@
-﻿using API.BDD;
-using API.BO;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using BLL.Services;
+using Microsoft.AspNetCore.Http;
+
+using API.BusinessObject;
+using BO.DTO.Responses;
+using BO.DTO.Requests;
 
 namespace API.Controllers
 {
     [ApiController]
-    [Route("api/plats")]
+    [Route("api/Reservation")]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     public class FoodController : ControllerBase
     {
-        private readonly IBDDEmulation _bDDEmulation;
-        public FoodController(IBDDEmulation bdd)
+
+        //Service qui gère la librairi
+        private readonly IReservationService _reservationService = null;
+
+        public FoodController(IReservationService restaurantService)
         {
-            _bDDEmulation = bdd;
+            _reservationService = restaurantService;
         }
+
 
         /// <summary>
         /// Permet de récupérer la liste des livres
         /// </summary>
         /// <returns>La liste des livres</returns>
         [HttpGet]
-        public async Task<ActionResult<List<Plat>>> GetAll()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<PageResponse<Reservation>>> GetAll([FromQuery] PageRequest pageRequest)
         {
-            //Renvoi la liste de tous les livres
-            return await Task.FromResult(Ok(_bDDEmulation.GetPlats()));
+
+            //return Ok(await _reservationService.GetAllReservations());
+           return Ok(await _reservationService.GetAllReservations(pageRequest));
         }
 
         /// <summary>
         /// Permert de récupérer un livre avec son identifiant unique
         /// </summary>
-        /// <param name="nom">Identifiant unique du livre</param>
+        /// <param name="id">Identifiant unique du livre</param>
         /// <returns>Renvoi le livre définit par l'identifiant unique</returns>
-        [HttpGet("{nom}")]
-        public async Task<ActionResult<Plat>> GetByName([FromRoute]string nom)
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetReservationById([FromRoute] int id)
         {
-            //Simulation de recherche BDD
-            Plat plat = _bDDEmulation.GetPlats().Find((b) => b.Nom == nom);
-            //END Simulation
-
-            if(plat != null)
+            Reservation reservation = await _reservationService.GetReservationById(id);
+            if (reservation == null)
             {
-                //Renvoi le livre avec un code 200
-                return await Task.FromResult(Ok(plat));
-            }else
+                return NotFound(); // StatusCode = 404
+            }
+            else
             {
-                //Renvoi un code 404 not found
-                return await Task.FromResult(NotFound());
+                return Ok(reservation); // StatusCode = 200
             }
         }
+
 
         /// <summary>
         /// Créer un livre et l'ajoute en BDD
         /// </summary>
-        /// <param name="plat">Livre à ajouter sans l'identifiant unique</param>
+        /// <param name="reservation">Livre à ajouter sans l'identifiant unique</param>
         /// <returns>Renvoi le livre avec l'identifiant généré</returns>
-        [HttpPost]
-        public async Task<ActionResult<Plat>> CreatePlat([FromBody] Plat plat)
+        [HttpPost()]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateReservation([FromBody] Reservation reservation)
         {
-            if(plat.Nom != null)
+            // Ajout du livre avec la bll server
+            Reservation newReservation = await _reservationService.CreateReservation(reservation);
+            if (newReservation != null)
             {
-                return await Task.FromResult(BadRequest());
+                // Créer une redirection vers GetBookById(newBook.BookId);
+                return CreatedAtAction(nameof(GetReservationById), new { id = newReservation.Id_reservation }, newReservation);
             }
             else
             {
-                //int? lastId = 0;
-                //if(_bDDEmulation.GetPlats().Count > 0)
-                //{
-                //    lastId = _bDDEmulation.GetPlats()[_bDDEmulation.GetPlats().Count - 1 ].Nom  + 1;
-                //}
-
-                //book.BookId = lastId;
-
-                //_bDDEmulation.GetBooks().Add(book);
-
-                //return await Task.FromResult(Ok(book));
+                // Retourne un code 400  Bad Request
+                return BadRequest();
             }
         }
 
-        [HttpDelete("{nom}")]
-        public async Task<IActionResult> DeleteBook([FromRoute]string nom)
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteReservation([FromRoute] int id)
         {
-            List<Plat> books = _bDDEmulation.GetPlats();
-
-            int numberDelete = books.RemoveAll( b => b.BookId == id);
-
-            if(numberDelete == 0)
+            if (await _reservationService.RemoveReservationById(id))
             {
-                 //Renvoi un code 404 not found
-                return await Task.FromResult(NotFound());
+                // Renvoie un code 204 aucun contenu
+                return NoContent();
             }
             else
             {
-                //Renvoi un code 404 not found
-                return await Task.FromResult(NoContent());
+                // Renvoie un code 404: la ressource est introuvable
+                return NotFound();
             }
         }
+
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Book>> ModifyBook([FromRoute] int id, [FromBody] Book book) 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ModifyReservation([FromRoute] int id, [FromBody] Reservation reservation)
         {
-            // Si le livre envoyé est nul ou la route ne correspond pas au livre => BAD RESQUEST erreur 400
-            if(book == null || book.BookId != id)
+            if (reservation == null || id != reservation.Id_reservation)
             {
-                return await Task.FromResult(BadRequest());
-            }
-
-            //Simulation de recherche BDD
-            Book bookInBDD = _bDDEmulation.GetBooks().Find((b) => b.BookId == id);
-            //END Simulation
-
-            if(bookInBDD != null)
-            {
-                // Modification du livre
-                bookInBDD.Title = book.Title;
-                bookInBDD.ISBN = book.ISBN;
-                bookInBDD.Description = book.Description;
-
-                //Renvoi du livre modifié au client
-                return await Task.FromResult(Ok(bookInBDD));
-
+                // Retourne un code 400  Bad Request
+                return BadRequest();
             }
             else
             {
-                //Renvoi un code 404 not found
-                return await Task.FromResult(NotFound());
+                Reservation reservationModified = await _reservationService.ModifyReservation(reservation);
+                if (reservationModified != null)
+                {
+                    // Renvoie la ressource modifiée
+                    return Ok(reservationModified);
+                }
+                else
+                {
+                    // Renvoie un code 404: la ressource est introuvable
+                    return NotFound();
+                }
             }
         }
+
     }
 }
+

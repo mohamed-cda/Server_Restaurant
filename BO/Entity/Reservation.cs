@@ -10,7 +10,7 @@ namespace API.BusinessObject
       /// Représente un objet Réservation
       /// </summary>
 
-        public string Id { get; set; }
+        public int Id_reservation { get; set; }
 
         /// <summary>
         ///Nom du client
@@ -32,10 +32,7 @@ namespace API.BusinessObject
             ///Num du téléphone client
             /// </summary>
             public string Telephone { get; set; }
-        /// <summary>
-        ///Midi ou soir
-        /// </summary>
-        public bool MidiOuSoir { get; set; }
+        
         /// <summary>
         ///Quantité
         /// </summary>
@@ -43,42 +40,44 @@ namespace API.BusinessObject
         /// <summary>
         ///formules au choix (entrée, plat, dessert), (entrée et plat), (plat et dessert)
         /// </summary>
-        public string Formule { get; set; }
+       
 
+        public int Id_menu { get; set; }
 
-
+        public int Id_formule { get; set; }
 
         /// <summary>
         /// Default constructor for API serialisation
         /// </summary>
         public Reservation() { }
 
-        /// <summary>
-        /// Constructeur utilitaire full properties
-        /// </summary>
-        /// <param name="Id">Date de réservation</param>
-        /// <param name="Date">Date de réservation</param>
-        /// <param name="Nom">Nom du client </param>
-        /// <param name="Prenom">Prénom du client </param>
-        /// <param name="Telephone"> Telephone </param>
-        /// <param name="MidiOuSoir">Midi ou soir</param>
-        /// <param name="Quantite">Quantite</param>
-        /// <param name="Formule">Formule</param>
-        public Reservation(string id,DateTime date, string nom, string prenom, string telephone,bool matinOuSoir,int quantite,string formule)
-            {
-            Id = id;
-                Date = date;
+
+        ///// <summary>
+        ///// Constructeur utilitaire full properties
+        ///// </summary>
+        ///// <param name="Id">Date de réservation</param>
+        ///// <param name="Date">Date de réservation</param>
+        ///// <param name="Nom">Nom du client </param>
+        ///// <param name="Prenom">Prénom du client </param>
+        ///// <param name="Telephone"> Telephone </param>
+        ///// <param name="MidiOuSoir">Midi ou soir</param>
+        ///// <param name="Quantite">Quantite</param>
+        ///// <param name="Formule">Formule</param>
+        public Reservation(int id_reservation, DateTime date, string nom, string prenom, string telephone, bool midi_Ou_Soir, int quantite, int id_menu, int id_formule)
+        {
+            Id_reservation = id_reservation;
+            Date = date;
             Nom = nom;
             Prenom = prenom;
             Telephone = telephone;
-            MidiOuSoir = matinOuSoir;
             Quantite = quantite;
-            Formule = formule;
+            Id_menu = id_menu;
+            Id_formule = id_formule;
+        }
 
 
-            }
 
-            public override bool Equals(object obj)
+        public override bool Equals(object obj)
             {
             return obj is Reservation reservation &&
                    Nom == reservation.Nom &&
@@ -89,8 +88,10 @@ namespace API.BusinessObject
 
             public override int GetHashCode()
             {
-                return HashCode.Combine(Nom, Prenom, Telephone, MidiOuSoir,Quantite,Formule);
+                return HashCode.Combine(Nom, Prenom, Telephone, Quantite);
             }
         }
+
+
     
 }

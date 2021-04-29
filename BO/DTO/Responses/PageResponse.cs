@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace BO.DTO.Responses
 {
     public class PageResponse<T>
@@ -15,7 +14,6 @@ namespace BO.DTO.Responses
         {
             get; set;
         }
-
         /// <summary>
         /// Limit entities on one page
         /// </summary>
@@ -23,7 +21,6 @@ namespace BO.DTO.Responses
         {
             get; set;
         }
-        
         /// <summary>
         /// Total count entities repository
         /// </summary>
@@ -31,21 +28,17 @@ namespace BO.DTO.Responses
         {
             get; set;
         }
-
         /// <summary>
         /// TotalPages
         /// </summary>
         public int? TotalPages => TotalRecords.HasValue ? (int)Math.Ceiling(TotalRecords.Value / (double)PageSize) : (int?)null;
-        
         /// <summary>
         /// List entities of the current page
         /// </summary>
         public List<T> Data { get; set; }
-
         public PageResponse()
         {
         }
-
         public PageResponse(int page, int pageSize, int? totalRecords, List<T> data)
         {
             Page = page;
@@ -53,6 +46,5 @@ namespace BO.DTO.Responses
             TotalRecords = totalRecords;
             Data = data;
         }
-
     }
 }

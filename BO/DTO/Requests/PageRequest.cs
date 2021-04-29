@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace BO.DTO.Requests
 {
     public class PageRequest
@@ -12,13 +11,10 @@ namespace BO.DTO.Requests
         /// Current Page
         /// </summary>
         public int Page { get; set; }
-
         /// <summary>
         /// Limit entities on one page
         /// </summary>
         public int PageSize { get; set; }
-
-
         public PageRequest()
         {
             Page = 1;

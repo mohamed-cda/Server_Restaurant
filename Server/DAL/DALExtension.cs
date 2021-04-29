@@ -16,7 +16,7 @@ namespace DAL
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             //Repositories
-            services.AddTransient<IBookRepository, BookRepository>();
+            services.AddTransient<IReservationRepository, ReservationRepository>();
 
             return services;
         }
