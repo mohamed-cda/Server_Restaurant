@@ -31,7 +31,15 @@ namespace BLL.Services
 
         public async Task<Reservation> ModifyReservation(Reservation reservation)
         {
-            return await Task.FromResult(new Reservation());
+            _db.BeginTransaction();
+            IReservationRepository _reservations = _db.GetRepository<IReservationRepository>();
+           var reussi = await _reservations.UpdateAsync(reservation);
+            _db.Commit();
+
+            if (reussi)
+                return await Task.FromResult(reservation);
+            else
+                return null;
         }
 
         public async Task<bool> RemoveReservationById(int id)

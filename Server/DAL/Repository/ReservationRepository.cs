@@ -55,9 +55,15 @@ namespace DAL.Repository
             return await GetAsync(i);
         }
 
-        public Task UpdateAsync(Reservation entity)
+        public async Task<bool> UpdateAsync(Reservation entity)
         {
-            throw new NotImplementedException();
+            var stmt = @"update reservation
+                set Nom=@Nom, Prenom=@Prenom, Date=@Date, Telephone=@Telephone, Quantite=@Quantite,Id_menu=@Id_menu, Id_formule=@Id_formule
+                where Id_reservation=@Id_reservation";
+
+            //nb Affected row
+            int i = await _session.Connection.ExecuteAsync(stmt, entity, _session.Transaction);
+            return i > 0;
         }
 
         public async Task <IEnumerable<Reservation>> GetAllAsync()
