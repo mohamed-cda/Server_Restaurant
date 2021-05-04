@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -9,10 +8,12 @@ using System.Threading.Tasks;
 using BLLC.Extensions;
 using System.Net.Http.Json;
 using API.BusinessObject;
+using BO.DTO.Requests;
+using BO.DTO.Responses;
 
 namespace BLLC.Services
 {
-    public class ReservationService
+    public class ReservationService:IReservationService
     {
         private readonly HttpClient _httpClient;
         public ReservationService()
@@ -21,17 +22,17 @@ namespace BLLC.Services
             _httpClient.BaseAddress = new Uri("https://localhost:5001/api/");
         }
 
-        public async Task<List<Reservation>> GetAllReservations()
+        public async Task<PageResponse<Reservation>> GetAllReservations(PageRequest pageRequest)
         {
-             //var reponse = await _httpClient.GetAsync($"reservation?page={pageRequest.Page}&pageSize={pageRequest.PageSize}");
-           var reponse = await _httpClient.GetAsync(_httpClient.BaseAddress);
+           var reponse = await _httpClient.GetAsync($"Reservation?page={pageRequest.Page}&pageSize={pageRequest.PageSize}");
+          // var reponse = await _httpClient.GetAsync(_httpClient.BaseAddress);
 
             // Si la requete a reussi
             if (reponse.IsSuccessStatusCode)
             {
                 using (var stream = await reponse.Content.ReadAsStreamAsync())
                 {
-                    List<Reservation> reservationsliste = await JsonSerializer.DeserializeAsync<List<Reservation>>(stream, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                    PageResponse<Reservation> reservationsliste = await JsonSerializer.DeserializeAsync<PageResponse<Reservation>>(stream, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     return reservationsliste;
                 }
             }
@@ -88,7 +89,7 @@ namespace BLLC.Services
         {
             try
             {
-                var reponse =  await _httpClient.PostAsJsonAsync("Reservation", reservation);
+                var reponse = await _httpClient.PostAsJsonAsync("Reservation", reservation);
                 using (var stream = await reponse.Content.ReadAsStreamAsync())
                 {
                     Reservation newReservation = await JsonSerializer.DeserializeAsync<Reservation>(stream, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
@@ -110,6 +111,7 @@ namespace BLLC.Services
             return null;
         }
 
+        
     }
 
 

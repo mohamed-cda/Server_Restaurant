@@ -15,10 +15,17 @@ namespace BO.DTO.Requests
         /// Limit entities on one page
         /// </summary>
         public int PageSize { get; set; }
+
         public PageRequest()
         {
             Page = 1;
             PageSize = 10;
+        }
+
+        public PageRequest(int page, int pageSize)
+        {
+            this.Page = page;
+            this.PageSize = pageSize;
         }
     }
 }
