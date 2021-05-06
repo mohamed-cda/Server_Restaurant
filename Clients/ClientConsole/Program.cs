@@ -25,7 +25,7 @@ namespace ClientConsole
 
 
              var newReservation = await reservationService.ModernPostReservation(new Reservation(){Nom= "El Barkani", Prenom= "Moham", Date = DateTime.Now, Telephone = "0670331321", Quantite = 3, Id_menu = 1, Id_formule = 1 });
-             Console.WriteLine("Le nouvelle id de lareservation est : " + newReservation.Id_reservation);
+           
 
 
         }
