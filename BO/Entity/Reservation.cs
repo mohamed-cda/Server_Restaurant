@@ -10,7 +10,7 @@ namespace API.BusinessObject
       /// Représente un objet Réservation
       /// </summary>
 
-        public int Id_reservation { get; set; }
+       
 
         /// <summary>
         ///Nom du client
@@ -42,9 +42,9 @@ namespace API.BusinessObject
         /// </summary>
        
 
-        public int Id_menu { get; set; }
+        public bool Midi_Soir { get; set; }
 
-        public int Id_formule { get; set; }
+        public string Formule { get; set; }
 
         /// <summary>
         /// Default constructor for API serialisation
@@ -63,16 +63,27 @@ namespace API.BusinessObject
         ///// <param name="MidiOuSoir">Midi ou soir</param>
         ///// <param name="Quantite">Quantite</param>
         ///// <param name="Formule">Formule</param>
-        public Reservation(int id_reservation, DateTime date, string nom, string prenom, string telephone, bool midi_Ou_Soir, int quantite, int id_menu, int id_formule)
+        //public Reservation(int id_reservation, DateTime date, string nom, string prenom, string telephone, bool midi_Ou_Soir, int quantite, int id_menu, int id_formule)
+        //{
+        //    Id_reservation = id_reservation;
+        //    Date = date;
+        //    Nom = nom;
+        //    Prenom = prenom;
+        //    Telephone = telephone;
+        //    Quantite = quantite;
+        //    Id_menu = id_menu;
+        //    Id_formule = id_formule;
+        //}
+        public Reservation(DateTime date, string nom, string prenom, string telephone, bool midi_Soir, int quantite, string formule)
         {
-            Id_reservation = id_reservation;
+           
             Date = date;
             Nom = nom;
             Prenom = prenom;
             Telephone = telephone;
             Quantite = quantite;
-            Id_menu = id_menu;
-            Id_formule = id_formule;
+            Midi_Soir = Midi_Soir;
+           Formule =formule;
         }
 
 

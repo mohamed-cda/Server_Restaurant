@@ -1,4 +1,5 @@
 ﻿using API.BusinessObject;
+using BO.Entity;
 using System;
 using System.Collections.Generic;
 
@@ -22,12 +23,13 @@ namespace API.BO
         /// <summary>
         /// Liste des ingrédients
         /// </summary>
-       public List<Ingredient> IngedientListe { get; set; }
+        public List<string> IngedientListe { get; set; }
+       public string TypePlat { get; set; }
 
         /// <summary>
         /// Entree ou dessert
         /// </summary>
-       
+
 
         /// <summary>
         /// Default constructor for API serialisation
@@ -41,10 +43,12 @@ namespace API.BO
         /// <param name="ingedientListe">Listes des ingrédient </param>
        
         
-        public Plat(string nom, List<Ingredient> ingedientListe)
+        public Plat(string nom,string typePlat,List<string> ingedientListe)
         {
             Nom = nom;
             IngedientListe = ingedientListe;
+            TypePlat = typePlat;
+
             
             
         }

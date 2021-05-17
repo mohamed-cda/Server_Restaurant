@@ -79,7 +79,8 @@ namespace API.Controllers
             if (newReservation != null)
             {
                 // Créer une redirection vers GetBookById(newBook.BookId);
-                return CreatedAtAction(nameof(GetReservationById), new { id = newReservation.Id_reservation }, newReservation);
+                // return CreatedAtAction(nameof(GetReservationById), new { id = newReservation.Id_reservation }, newReservation);
+                return CreatedAtAction(nameof(GetReservationById), new { id = 2 }, newReservation);
             }
             else
             {
@@ -113,8 +114,9 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ModifyReservation([FromRoute] int id, [FromBody] Reservation reservation)
         {
-            if (reservation == null || id != reservation.Id_reservation)
-            {
+           // if (reservation == null || id != reservation.Id_reservation)
+                if (reservation == null || id !=2)
+                {
                 // Retourne un code 400  Bad Request
                 return BadRequest();
             }

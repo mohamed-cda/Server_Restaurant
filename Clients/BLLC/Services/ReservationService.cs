@@ -13,7 +13,7 @@ using BO.DTO.Responses;
 
 namespace BLLC.Services
 {
-    public class ReservationService:IReservationService
+    public class ReservationService : IReservationService
     {
         private readonly HttpClient _httpClient;
         public ReservationService()
@@ -24,8 +24,8 @@ namespace BLLC.Services
 
         public async Task<PageResponse<Reservation>> GetAllReservations(PageRequest pageRequest)
         {
-           var reponse = await _httpClient.GetAsync($"Reservation?page={pageRequest.Page}&pageSize={pageRequest.PageSize}");
-          // var reponse = await _httpClient.GetAsync(_httpClient.BaseAddress);
+            var reponse = await _httpClient.GetAsync($"Reservation?page={pageRequest.Page}&pageSize={pageRequest.PageSize}");
+            // var reponse = await _httpClient.GetAsync(_httpClient.BaseAddress);
 
             // Si la requete a reussi
             if (reponse.IsSuccessStatusCode)
@@ -111,7 +111,7 @@ namespace BLLC.Services
             return null;
         }
 
-        
+
     }
 
 

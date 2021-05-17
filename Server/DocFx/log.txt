@@ -1,0 +1,1 @@
+{"message":"No metadata is generated for DocFx.","source":"MetadataCommand.ExtractMetadata","date_time":"2021-05-11T13:10:56.0172126Z","message_severity":"warning","correlation_id":"BCF1CCD6-5841-4B29-BBA6-7BB11EE242CE.1.1.11"}
