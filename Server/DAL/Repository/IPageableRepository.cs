@@ -1,4 +1,5 @@
-﻿using BO.DTO.Requests;
+﻿
+using BO.DTO;
 using BO.DTO.Responses;
 using System;
 using System.Collections.Generic;

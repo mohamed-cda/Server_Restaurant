@@ -1,6 +1,6 @@
-﻿using API.BusinessObject;
-using BO.DTO.Requests;
+﻿using BO.DTO;
 using BO.DTO.Responses;
+using BO.Entity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,7 +10,7 @@ namespace BLLC.Services
     {
         Task<Reservation> CreateReservation(Reservation reservation);
         Task<PageResponse<Reservation>> GetAllReservations(PageRequest pageRequest);
-        Task<List<Reservation>> ModernGetAllReservations();
+        
         Task<Reservation> ModernPostReservation(Reservation reservation);
     }
 }

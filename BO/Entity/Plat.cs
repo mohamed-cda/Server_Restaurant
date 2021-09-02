@@ -1,69 +1,47 @@
-﻿using API.BusinessObject;
-using BO.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace API.BO
+namespace BO.Entity
 {
     /// <summary>
     /// Représente un objet Plat
     /// </summary>
-    
+
     public class Plat
     {
         /// <summary>
         /// Id du plat
         /// </summary>
-        public string Id { get; set; }
+        public int Id_plat { get; set; }
         /// <summary>
         /// Nom du plat
         /// </summary>
-        public string Nom {get; set;}
-
-        /// <summary>
-        /// Liste des ingrédients
-        /// </summary>
-        public List<string> IngedientListe { get; set; }
-       public string TypePlat { get; set; }
-
-        /// <summary>
-        /// Entree ou dessert
-        /// </summary>
+        public string Nom { get; set; }
+        public int Id_Type { get; set; }
+        public TypePlat Type { get; set; }
+        public List<Ingredient> Ingredient { get; set; }
 
 
-        /// <summary>
-        /// Default constructor for API serialisation
-        /// </summary>
+
+
         public Plat(){}
 
         /// <summary>
         /// Constructeur utilitaire full properties
         /// </summary>
-        /// <param name="nom">Nom du plat</param>
-        /// <param name="ingedientListe">Listes des ingrédient </param>
+        /// <param name="id">id du plat</param>
+        /// <param name="nom">nom du plat </param>
        
         
-        public Plat(string nom,string typePlat,List<string> ingedientListe)
+        
+
+        public Plat(int id_plat, string nom, int id_Type, TypePlat type, List<Ingredient> ingredient)
         {
+            Id_plat = id_plat;
             Nom = nom;
-            IngedientListe = ingedientListe;
-            TypePlat = typePlat;
-
-            
-            
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Plat plat &&
-                   Nom == plat.Nom;
-            // a finir avec les autres parms
-                   
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Nom);
+            Id_Type = id_Type;
+            Type = type;
+            Ingredient = ingredient;
         }
     }
 }

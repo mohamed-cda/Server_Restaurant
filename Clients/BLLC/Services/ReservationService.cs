@@ -7,50 +7,31 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using BLLC.Extensions;
 using System.Net.Http.Json;
-using API.BusinessObject;
-using BO.DTO.Requests;
 using BO.DTO.Responses;
+using BO.Entity;
+using BO.DTO;
 
 namespace BLLC.Services
 {
     public class ReservationService : IReservationService
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient = AuthentificationService.Getinstance().HttpClient;
         public ReservationService()
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:5001/api/");
+            
         }
+
+        
 
         public async Task<PageResponse<Reservation>> GetAllReservations(PageRequest pageRequest)
         {
-            var reponse = await _httpClient.GetAsync($"Reservation?page={pageRequest.Page}&pageSize={pageRequest.PageSize}");
-            // var reponse = await _httpClient.GetAsync(_httpClient.BaseAddress);
-
-            // Si la requete a reussi
-            if (reponse.IsSuccessStatusCode)
-            {
-                using (var stream = await reponse.Content.ReadAsStreamAsync())
-                {
-                    PageResponse<Reservation> reservationsliste = await JsonSerializer.DeserializeAsync<PageResponse<Reservation>>(stream, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-                    return reservationsliste;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public async Task<List<Reservation>> ModernGetAllReservations()
-        {
             try
             {
-                return await _httpClient.GetFromJsonAsync<List<Reservation>>(_httpClient.BaseAddress);
+                return await _httpClient.GetFromJsonAsync<PageResponse<Reservation>>($"Reservation?page={pageRequest.Page}&pageSize={pageRequest.PageSize}");
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("An error occurred. (code:" + e.StatusCode.Value + ") => " + e.Message);
+                Console.WriteLine("An error occurred => " + e.Message);
             }
             catch (NotSupportedException e)
             {
@@ -62,7 +43,27 @@ namespace BLLC.Services
             }
             return null;
         }
-
+        public async Task<PageResponse<Menu>> GetAllMenus(PageRequest pageRequest)
+        {
+            try
+            {
+                return await _httpClient.GetFromJsonAsync<PageResponse<Menu>>($"ListeMenu?page={pageRequest.Page}&pageSize={pageRequest.PageSize}");
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("An error occurred => " + e.Message);
+            }
+            catch (NotSupportedException e)
+            {
+                Console.WriteLine("The content type is not supported.");
+            }
+            catch (JsonException e) // Invalid JSON
+            {
+                Console.WriteLine("Invalid JSON.");
+            }
+            return null;
+        }
+        
         public async Task<Reservation> CreateReservation(Reservation reservation)
         {
             var reponse = await _httpClient.PostAsync("Reservation",
@@ -98,7 +99,7 @@ namespace BLLC.Services
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("An error occurred. (code:" + e.StatusCode.Value + ") => " + e.Message);
+                Console.WriteLine("An error occurred=> " + e.Message);
             }
             catch (NotSupportedException e)
             {

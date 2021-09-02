@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Logging;
 
-using API.BusinessObject;
+
 using Microsoft.AspNetCore.Mvc;
-using BO.DTO.Requests;
+
 using BO.DTO.Responses;
+using BO.Entity;
+using BO.DTO;
 
 namespace DAL.Repository
 {
@@ -23,7 +25,7 @@ namespace DAL.Repository
             _logger = logger;
         }
 
-        public Task<int> DeleteAsync(long id)
+        public Task<bool> DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
@@ -49,7 +51,7 @@ namespace DAL.Repository
 
         public async Task<Reservation> InsertAsync(Reservation entity)
         {
-            var stmt = @"insert into reservation(Nom, Prenom, Date, Telephone, Quantite,Id_menu, Id_formule) output INSERTED.id_reservation
+            var stmt = @"insert into reservation(Nom, Prenom, _date, Telephone, Quantite,Id_menu, Id_formule) output INSERTED.id_reservation
             values (@Nom, @Prenom, @Date, @Telephone, @Quantite, @Id_menu, @Id_formule)";
             int i = await _session.Connection.QuerySingleAsync<int>(stmt, entity, _session.Transaction);
             return await GetAsync(i);

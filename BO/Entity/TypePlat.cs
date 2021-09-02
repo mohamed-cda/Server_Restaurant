@@ -8,47 +8,29 @@ namespace BO.Entity
 {
     public class TypePlat
     {
-        public string Plat { get; set; }
+        public int Id_Type { get; set; }
 
-        /// <summary>
-        /// Prix moyen de l'ingrédient
-        /// </summary>
-        public string Entree { get; set; }
-        public string Dessert { get; set; }
-        public string EntreePlat { get; set; }
-        public string DessertPlat { get; set; }
+        public string Label { get; set; }
+       
 
-        /// <summary>
-        /// Default constructor for API serialisation
-        /// </summary>
         public TypePlat() { }
 
         /// <summary>
         /// Constructeur utilitaire full properties
         /// </summary>
-        /// <param name="nom">Nom de l'ingrédient</param>
-        /// <param name="prix">Prix de l'ingrédient</param>
+        /// <param name="Id">id du plat</param>
+        /// <param name="label">label du plat</param>
 
-        public TypePlat(string nom, string entree,string dessert,string entreePlat,string dessertPlat)
+        public TypePlat(int id_Type, string label)
         {
-            Plat = nom;
-            Entree =entree;
-            Dessert = dessert;
-            EntreePlat = entreePlat;
-            DessertPlat = dessertPlat;
-
+            Id_Type = id_Type;
+            Label =label;
+            
         }
-        //public override bool Equals(object obj)
-        //{
-        //    return obj is TypePlat typePlat &&
-        //           Nom == TypePlat.Nom &&
-        //           Prix == ingredient.Prix;
-        //}
 
-        //public override int GetHashCode()
-        //{
-        //    return HashCode.Combine(Nom, Prix);
-        //}
-    
-}
+        public override string ToString()
+        {
+            return Label;
+        }
+    }
 }

@@ -12,7 +12,7 @@ namespace DAL.Repository
 
         Task<TEntity> GetAsync(int id);
         
-        Task<int> DeleteAsync(long id);
+        Task<bool> DeleteAsync(int id);
         
         Task<bool> UpdateAsync(TEntity entity);
         

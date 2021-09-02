@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace BO.DTO.Requests
+namespace BO.DTO
 {
     public class PageRequest
     {

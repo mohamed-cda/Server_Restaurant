@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.BusinessObject
+namespace BO.Entity
 {
     public class Reservation
     { /// <summary>
       /// Représente un objet Réservation
       /// </summary>
 
-       
-
+              
+        public int Id { get; set; }
         /// <summary>
         ///Nom du client
         /// </summary>
@@ -26,83 +26,67 @@ namespace API.BusinessObject
             /// <summary>
             /// Prénom du client
             /// </summary>
-            public string Prenom { get; set; }
+        public string Prenom { get; set; }
 
             /// <summary>
             ///Num du téléphone client
             /// </summary>
-            public string Telephone { get; set; }
-        
+        public string Telephone { get; set; }
+
         /// <summary>
         ///Quantité
         /// </summary>
         public int Quantite { get; set; }
-        /// <summary>
-        ///formules au choix (entrée, plat, dessert), (entrée et plat), (plat et dessert)
-        /// </summary>
+        public int Id_Menu { get; set; }
        
+        public int Id_Formule { get; set; }
 
-        public bool Midi_Soir { get; set; }
-
-        public string Formule { get; set; }
-
-        /// <summary>
-        /// Default constructor for API serialisation
-        /// </summary>
         public Reservation() { }
 
 
-        ///// <summary>
-        ///// Constructeur utilitaire full properties
-        ///// </summary>
-        ///// <param name="Id">Date de réservation</param>
-        ///// <param name="Date">Date de réservation</param>
-        ///// <param name="Nom">Nom du client </param>
-        ///// <param name="Prenom">Prénom du client </param>
-        ///// <param name="Telephone"> Telephone </param>
-        ///// <param name="MidiOuSoir">Midi ou soir</param>
-        ///// <param name="Quantite">Quantite</param>
-        ///// <param name="Formule">Formule</param>
-        //public Reservation(int id_reservation, DateTime date, string nom, string prenom, string telephone, bool midi_Ou_Soir, int quantite, int id_menu, int id_formule)
-        //{
-        //    Id_reservation = id_reservation;
-        //    Date = date;
-        //    Nom = nom;
-        //    Prenom = prenom;
-        //    Telephone = telephone;
-        //    Quantite = quantite;
-        //    Id_menu = id_menu;
-        //    Id_formule = id_formule;
-        //}
-        public Reservation(DateTime date, string nom, string prenom, string telephone, bool midi_Soir, int quantite, string formule)
+        
+        public Reservation(int id, DateTime date, string nom, string prenom, string telephone, int quantite, int id_Menu, int id_Formule)
         {
-           
+            Id = id;
             Date = date;
             Nom = nom;
             Prenom = prenom;
             Telephone = telephone;
             Quantite = quantite;
-            Midi_Soir = Midi_Soir;
-           Formule =formule;
+            Id_Menu = id_Menu;
+            Id_Formule = id_Formule;
+
+
         }
-
-
 
         public override bool Equals(object obj)
-            {
+        {
             return obj is Reservation reservation &&
+                   Id == reservation.Id &&
+                   Date == reservation.Date &&
                    Nom == reservation.Nom &&
                    Prenom == reservation.Prenom &&
-                   Telephone == reservation.Telephone;
-                      
-            }
-
-            public override int GetHashCode()
-            {
-                return HashCode.Combine(Nom, Prenom, Telephone, Quantite);
-            }
+                   Telephone == reservation.Telephone &&
+                   Quantite == reservation.Quantite &&
+                   Id_Menu == reservation.Id_Menu &&
+                   Id_Formule == reservation.Id_Formule;
         }
 
+        public override int GetHashCode()
+        {
+            int hashCode = 2097201684;
+            hashCode = hashCode * -1521134295 + Id.GetHashCode();
+            hashCode = hashCode * -1521134295 + Date.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Nom);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Prenom);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Telephone);
+            hashCode = hashCode * -1521134295 + Quantite.GetHashCode();
+            hashCode = hashCode * -1521134295 + Id_Menu.GetHashCode();
+            hashCode = hashCode * -1521134295 + Id_Formule.GetHashCode();
+            return hashCode;
+        }
+    }
 
-    
+
+
 }

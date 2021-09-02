@@ -1,6 +1,6 @@
-﻿using API.BusinessObject;
-using BO.DTO.Requests;
+﻿using BO.DTO;
 using BO.DTO.Responses;
+using BO.Entity;
 using DAL.Repository;
 using DAL.UOW;
 using Microsoft.AspNetCore.Mvc;
@@ -26,14 +26,14 @@ namespace BLL.Services
             Reservation newReservation = await _reservations.InsertAsync(reservation);
             _db.Commit();
             return newReservation;
-        
-         }
+
+        }
 
         public async Task<Reservation> ModifyReservation(Reservation reservation)
         {
             _db.BeginTransaction();
             IReservationRepository _reservations = _db.GetRepository<IReservationRepository>();
-           var reussi = await _reservations.UpdateAsync(reservation);
+            var reussi = await _reservations.UpdateAsync(reservation);
             _db.Commit();
 
             if (reussi)
@@ -54,23 +54,23 @@ namespace BLL.Services
             return await _reservations.GetAllAsync(pageRequest);
 
         }
+        public async Task<PageResponse<Menu>> GetAllMenus(PageRequest pageRequest)
+        {
+            IMenuRepository _lsiteMenus = _db.GetRepository<IMenuRepository>();
+
+            return await _lsiteMenus.GetAllAsync(pageRequest);
+
+        }
 
         public async Task<Reservation> GetReservationById(int id)
         {
-            
+
             IReservationRepository _Reservations = _db.GetRepository<IReservationRepository>();
 
             return await _Reservations.GetAsync(id);
         }
 
-       
 
-        
-
-        public Task<List<Reservation>> GetAllReservations()
-        {
-            throw new System.NotImplementedException();
-        }
 
 
         #endregion

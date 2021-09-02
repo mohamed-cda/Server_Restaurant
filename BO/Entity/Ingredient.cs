@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.BusinessObject
+namespace BO.Entity
 {
     public class Ingredient
-    {
+    { public int Id_ingredient { get; set; }
         /// <summary>
         /// Nom du de l ingrédient
         /// </summary>
@@ -15,7 +15,7 @@ namespace API.BusinessObject
                 /// <summary>
         /// Prix moyen de l'ingrédient
         /// </summary>
-        public double Prix { get; set; }
+        public float Prix { get; set; }
 
         /// <summary>
         /// Default constructor for API serialisation
@@ -28,8 +28,9 @@ namespace API.BusinessObject
         /// <param name="nom">Nom de l'ingrédient</param>
         /// <param name="prix">Prix de l'ingrédient</param>
         
-        public Ingredient(string nom, double prix)
+        public Ingredient(int id, string nom, float prix)
         {
+            Id_ingredient = id;
             Nom = nom;
             Prix = prix;
             
@@ -43,7 +44,11 @@ namespace API.BusinessObject
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Nom, Prix);
+            int hashCode = 791861747;
+            hashCode = hashCode * -1521134295 + Id_ingredient.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Nom);
+            hashCode = hashCode * -1521134295 + Prix.GetHashCode();
+            return hashCode;
         }
     }
 }

@@ -3,19 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.BusinessObject
+namespace BO.Entity
 {
     public class Menu
     {
         /// <summary>
-        /// Nom du de l ingrédient
+        /// Nom du menu
         /// </summary>
-        public string Id_menu { get; set; }
+        public int Id_menu { get; set; }
 
         /// <summary>
-        /// Prix moyen de l'ingrédient
+        /// service 
         /// </summary>
+        
+        public bool IsMidi{ get; set; }
         public DateTime Date { get; set; }
+
+        /// <summary>
+        /// Plats
+        /// </summary>
+        public List<Plat> Plats { get; set; }
 
         /// <summary>
         /// Default constructor for API serialisation
@@ -25,13 +32,15 @@ namespace API.BusinessObject
         /// <summary>
         /// Constructeur utilitaire full properties
         /// </summary>
-        /// <param name="nom">Nom de l'ingrédient</param>
-        /// <param name="prix">Prix de l'ingrédient</param>
+        /// <param name="Id">Id du menu</param>
+        /// <param name="Date">date du menu</param>
 
-        public Menu(string id_menu,DateTime date)
+        public Menu(int id, bool isMidi,DateTime date, List<Plat> plats)
         {
-            Id_menu = id_menu;
+            Id_menu = id;
+            IsMidi = isMidi;
             Date = date;
+            Plats = plats;
 
         }
         public override bool Equals(object obj)
@@ -43,7 +52,11 @@ namespace API.BusinessObject
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id_menu, Date);
+            int hashCode = 2074505245;
+            hashCode = hashCode * -1521134295 + Id_menu.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<bool>.Default.GetHashCode(IsMidi);
+            hashCode = hashCode * -1521134295 + Date.GetHashCode();
+            return hashCode;
         }
     }
 }

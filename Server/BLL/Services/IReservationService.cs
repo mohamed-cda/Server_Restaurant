@@ -1,31 +1,17 @@
-﻿using API.BusinessObject;
-using BO.DTO.Requests;
+﻿using BO.DTO;
 using BO.DTO.Responses;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using BO.Entity;
 using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public interface IReservationService
+   public  interface IReservationService
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="reservation"></param>
-        /// <returns></returns>
         Task<Reservation> CreateReservation(Reservation reservation);
-
-        Task<List<Reservation>> GetAllReservations();
+        Task<PageResponse<Menu>> GetAllMenus(PageRequest pageRequest);
         Task<PageResponse<Reservation>> GetAllReservations(PageRequest pageRequest);
-
-       
-
         Task<Reservation> GetReservationById(int id);
-
         Task<Reservation> ModifyReservation(Reservation reservation);
-
         Task<bool> RemoveReservationById(int id);
-
     }
 }

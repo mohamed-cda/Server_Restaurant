@@ -1,4 +1,5 @@
-﻿using API.BusinessObject;
+﻿
+using BO.Entity;
 
 namespace DAL.Repository
 {

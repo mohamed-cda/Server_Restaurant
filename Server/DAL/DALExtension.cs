@@ -17,6 +17,10 @@ namespace DAL
 
             //Repositories
             services.AddTransient<IReservationRepository, ReservationRepository>();
+            services.AddTransient<IMenuRepository, MenuRepository>();
+            services.AddTransient<IPlatRepository, PlatRepository>();
+            services.AddTransient<IIngredientRepository, IngredientRepository>();
+
 
             return services;
         }

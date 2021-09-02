@@ -1,10 +1,9 @@
-﻿using API.BO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.BusinessObject
+namespace BO.Entity
 {
     public class Formule
     {
@@ -16,51 +15,39 @@ namespace API.BusinessObject
         /// <summary>
         /// Plat
         /// </summary>
-        public Plat Plat { get; set; }
+        public string Label { get; set; }
 
         /// <summary>
         /// Dessert
         /// </summary>
-        public string Dessert { get; set; }
-        /// <summary>
-        /// Entree
-        /// </summary>
-        public string Entree { get; set; }
-
         
-       
-
-        /// <summary>
-        /// Default constructor for API serialisation
-        /// </summary>
-        /// 
+        
         public Formule() { }
 
         /// <summary>
         /// Constructeur utilitaire full properties
         /// </summary>
-        /// <param name="id">Nom de l'ingrédient</param>
-        /// <param name="plat">Prix de l'ingrédient</param>
-        /// <param name="entree">Prix de l'ingrédient</param>
-        /// <param name="dessert">Prix de l'ingrédient</param>
-        public Formule(int id, Plat plat,string entree,string dessert)
+        /// <param name="id">Nom de la formule</param>
+        /// <param name="label">label de la formule</param>
+        
+        public Formule(int id, string label)
         {
            Id = id;
-           
-            Entree = entree;
-            Dessert = dessert;
-
+           Label = label;
         }
         public override bool Equals(object obj)
         {
             return obj is Formule formule &&
                    Id == formule.Id &&
-                   Plat == formule.Plat;
+                   Label == formule.Label;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, Plat);
+            int hashCode = 478122909;
+            hashCode = hashCode * -1521134295 + Id.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Label);
+            return hashCode;
         }
     }
     }
